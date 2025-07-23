@@ -29,7 +29,7 @@ public class Recette {
     @NotBlank(message = "Les instructions sont obligatoires")
     private String instructions;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "categorie_id")
     @NotNull(message = "La catégorie est obligatoire")
     private Categorie categorie;

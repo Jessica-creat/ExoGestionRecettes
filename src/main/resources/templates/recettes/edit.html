@@ -7,6 +7,10 @@
 <body>
 <h1>Modifier Recette</h1>
 
+<!-- En haut du fichier -->
+<div th:if="${recette == null}">ERREUR : recette est null</div>
+<div th:if="${allCategories == null}">ERREUR : allCategories est null</div>
+
 <form th:action="@{/recettes/edit/{id}(id=${recette.id})}" th:object="${recette}" method="post">
     <!-- Champ Nom -->
     <div>

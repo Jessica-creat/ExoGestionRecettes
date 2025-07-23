@@ -34,7 +34,7 @@ public class Categorie {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    @OneToMany(mappedBy = "categorie", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore // Pour éviter les références circulaires en JSON
+    @OneToMany(mappedBy = "categorie", cascade = CascadeType.ALL)
+    @JsonIgnore // Bloque la sérialisation côté parent
     private List<Recette> recettes = new ArrayList<>();
 }

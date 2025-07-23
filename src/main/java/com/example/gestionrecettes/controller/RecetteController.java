@@ -6,6 +6,8 @@ import com.example.gestionrecettes.repository.RecetteRepository;
 import com.example.gestionrecettes.repository.CategorieRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -56,10 +58,43 @@ public class RecetteController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
         Recette recette = recetteRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ID de recette invalide: " + id));
+                .orElseThrow(() -> new IllegalArgumentException("Recette introuvable : " + id));
+
         model.addAttribute("recette", recette);
-        model.addAttribute("allCategories", categorieRepository.findAll()); // Ajoutez cette ligne
+        model.addAttribute("allCategories", categorieRepository.findAll()); // ← AJOUT CRITIQUE
+
         return "recettes/edit";
+    }
+
+    @GetMapping("/test/{id}")
+    @ResponseBody
+    public ResponseEntity<String> testRecette(@PathVariable Long id) {
+        try {
+            // 1. Récupération de la recette
+            Recette recette = recetteRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Recette non trouvée avec l'ID : " + id));
+
+            // 2. Logs pour débogage (à vérifier dans la console ou les logs serveur)
+            System.out.println("[DEBUG] Recette trouvée : " + recette.getNom());
+            System.out.println("[DEBUG] Catégorie associée : " +
+                    (recette.getCategorie() != null ? recette.getCategorie().getNom() : "null"));
+
+            // 3. Réponse structurée
+            String response = String.format(
+                    "Test réussie - Recette [ID=%d, Nom=%s, Catégorie=%s]",
+                    recette.getId(),
+                    recette.getNom(),
+                    recette.getCategorie() != null ? recette.getCategorie().getNom() : "Aucune"
+            );
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            // 4. Gestion des erreurs détaillée
+            String errorMessage = "Échec du test pour l'ID " + id + " : " + e.getMessage();
+            System.err.println("[ERROR] " + errorMessage);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        }
     }
 
     @PostMapping("/edit/{id}")
