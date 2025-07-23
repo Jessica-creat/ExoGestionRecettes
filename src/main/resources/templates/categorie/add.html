@@ -10,14 +10,14 @@
     <!-- Champ Nom -->
     <div>
         <label>Nom:</label>
-        <input type="text" th:value="*{nom}" name="nom" required>
+        <input type="text" th:field="*{nom}" required>
         <span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></span>
     </div>
 
     <!-- Champ Description -->
     <div>
         <label>Description:</label>
-        <textarea th:value="*{description}" name="description"></textarea>
+        <textarea th:field="*{description}"></textarea>
     </div>
 
     <button type="submit">Ajouter</button>

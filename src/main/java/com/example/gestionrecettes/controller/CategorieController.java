@@ -29,9 +29,7 @@ public class CategorieController {
 
     @GetMapping("/add")
     public String showAddForm(Model model) {
-        Categorie categorie = new Categorie();
-        System.out.println("Categorie object created: " + categorie); // Debug
-        model.addAttribute("categorie", categorie);
+        model.addAttribute("categorie", new Categorie()); // Initialise l'objet
         return "categories/add";
     }
 
