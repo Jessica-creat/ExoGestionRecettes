@@ -55,7 +55,7 @@ public class RecetteController {
         return "redirect:/recettes";
     }
 
-    @GetMapping("/edit/{id}")
+    /*@GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
         Recette recette = recetteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Recette introuvable : " + id));
@@ -64,6 +64,28 @@ public class RecetteController {
         model.addAttribute("allCategories", categorieRepository.findAll()); // ← AJOUT CRITIQUE
 
         return "recettes/edit";
+    }*/
+
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
+        try {
+            Recette recette = recetteRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Recette introuvable"));
+
+            // Log critique pour débogage
+            System.out.println("[DEBUG] Recette à éditer : " + recette.getNom());
+            System.out.println("[DEBUG] Catégorie associée : " + recette.getCategorie().getNom());
+            System.out.println("[DEBUG] Nombre de catégories disponibles : " +
+                    categorieRepository.count());
+
+            model.addAttribute("recette", recette);
+            model.addAttribute("allCategories", categorieRepository.findAll());
+
+            return "recettes/edit";
+        } catch (Exception e) {
+            System.err.println("[ERROR] Échec du chargement de l'édition : " + e.getMessage());
+            throw e; // Pour voir la stacktrace complète dans les logs
+        }
     }
 
     @GetMapping("/test/{id}")

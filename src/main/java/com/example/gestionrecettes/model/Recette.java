@@ -34,6 +34,15 @@ public class Recette {
     @NotNull(message = "La catégorie est obligatoire")
     private Categorie categorie;
 
+    @Override
+    public String toString() {
+        return "Recette{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", categorie=" + (categorie != null ? categorie.getId() : "null") +
+                '}';
+    }
+
     // Getters et setters
     public String getNom() { return nom; }
     public void setNom(String nom) { this.nom = nom; }

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,14 @@ public class Categorie {
 
     private String description;
 
+    @Override
+    public String toString() {
+        return "Categorie{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
     // Getters et setters OBLIGATOIRES
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -35,6 +44,7 @@ public class Categorie {
     public void setDescription(String description) { this.description = description; }
 
     @OneToMany(mappedBy = "categorie", cascade = CascadeType.ALL)
-    @JsonIgnore // Bloque la sérialisation côté parent
+    @JsonIgnore
+    @ToString.Exclude // Nouvelle annotation
     private List<Recette> recettes = new ArrayList<>();
 }
