@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier Recette</title>
+</head>
+<body>
+<h1>Modifier Recette</h1>
+
+<form th:action="@{/recettes/edit/{id}(id=${recette.id})}" th:object="${recette}" method="post">
+    <!-- Champ Nom -->
+    <div>
+        <label>Nom:</label>
+        <input type="text" th:field="*{nom}">
+        <span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></span>
+    </div>
+
+    <!-- Champ Ingrédients -->
+    <div>
+        <label>Ingrédients:</label>
+        <textarea th:field="*{ingredients}"></textarea>
+        <span th:if="${#fields.hasErrors('ingredients')}" th:errors="*{ingredients}"></span>
+    </div>
+
+    <!-- Champ Instructions -->
+    <div>
+        <label>Instructions:</label>
+        <textarea th:field="*{instructions}"></textarea>
+        <span th:if="${#fields.hasErrors('instructions')}" th:errors="*{instructions}"></span>
+    </div>
+
+    <!-- Sélection Catégorie -->
+    <div>
+        <label>Catégorie:</label>
+        <select th:field="*{categorie}">
+            <option th:each="categorie : ${allCategories}"
+                    th:value="${categorie.id}"
+                    th:text="${categorie.nom}"
+                    th:selected="${categorie.id == recette.categorie?.id}">
+            </option>
+        </select>
+        <span th:if="${#fields.hasErrors('categorie')}" th:errors="*{categorie}"></span>
+    </div>
+
+    <button type="submit">Enregistrer</button>
+    <a th:href="@{/recettes}">Annuler</a>
+</form>
+</body>
+</html>
